@@ -18,7 +18,7 @@ from django.urls import path, include # new
 
 urlpatterns = [
     # Django admin
-    path('admin/', admin.site.urls),
+    path('yeni-bir-admin/', admin.site.urls), # new
 
     # User management
     path('accounts/', include('allauth.urls')), # new

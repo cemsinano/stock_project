@@ -6,7 +6,9 @@ services:
     #command: python /code/manage.py runserver 0.0.0.0:8000
     command: gunicorn hisse_project.wsgi -b 0.0.0.0:8000 # new
     environment:
+      - ENVIRONMENT=production
       - SECRET_KEY=86)5)oyuk%++vbcyba*1pty1dwkl_p!!*su^&^q8_*-18-qvr1
+      - DEBUG=0
     volumes:
     - .:/code
     ports:

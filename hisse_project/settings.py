@@ -19,13 +19,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '86)5)oyuk%++vbcyba*1pty1dwkl_p!!*su^&^q8_*-18-qvr1'
+#SECRET_KEY = '86)5)oyuk%++vbcyba*1pty1dwkl_p!!*su^&^q8_*-18-qvr1'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+
+
+ENVIRONMENT = os.environ.get('ENVIRONMENT', default='development')
 
 
 # Application definition
@@ -36,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic', # new
     'django.contrib.staticfiles',
     'django.contrib.sites', # new
 
@@ -52,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # new
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -172,3 +181,22 @@ ACCOUNT_USERNAME_REQUIRED = False # new
 ACCOUNT_AUTHENTICATION_METHOD = 'email' # new
 ACCOUNT_EMAIL_REQUIRED = True # new
 ACCOUNT_UNIQUE_EMAIL = True # new
+
+
+# production
+if ENVIRONMENT == 'production':
+    SECURE_BROWSER_XSS_FILTER = True # new
+    X_FRAME_OPTIONS = 'DENY' # new
+    SECURE_SSL_REDIRECT = True # new
+    SECURE_HSTS_SECONDS = 3600 # new
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True # new
+    SECURE_HSTS_PRELOAD = True # new
+    SECURE_CONTENT_TYPE_NOSNIFF = True # new
+    SESSION_COOKIE_SECURE = True # new
+    CSRF_COOKIE_SECURE = True # new
+
+
+# Heroku
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
