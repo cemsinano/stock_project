@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['enigmatic-sierra-45569.herokuapp.com','.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 ENVIRONMENT = os.environ.get('ENVIRONMENT', default='development')
@@ -194,6 +194,7 @@ if ENVIRONMENT == 'production':
     SECURE_CONTENT_TYPE_NOSNIFF = True # new
     SESSION_COOKIE_SECURE = True # new
     CSRF_COOKIE_SECURE = True # new
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') # new
 
 
 # Heroku
